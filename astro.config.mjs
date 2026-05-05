@@ -5,7 +5,6 @@ import { defineConfig, fontProviders } from 'astro/config';
 export default defineConfig({
     site: 'https://dakkang03.github.io',
 	base: '/blog',
-    // i18n 블록 제거 — [..slug].astro에서 직접 lang 파싱
     integrations: [mdx(), sitemap()],
     fonts: [
         {
