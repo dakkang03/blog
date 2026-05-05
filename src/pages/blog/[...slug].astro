@@ -3,18 +3,27 @@ import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
-}
-type Props = CollectionEntry<'blog'>;
+    const posts = await getCollection('blog');
 
-const post = Astro.props;
+    return posts.map((post) => {
+        const slug = post.id.replace(/\.(md|mdx)$/, ''); // "en/init"
+
+        return {
+            params: { slug },  // slug = "en/init" 이어야 함
+            props: { post },
+        };
+    });
+}
+
+interface Props {
+    post: CollectionEntry<'blog'>;
+    lang: string;
+}
+
+const { post, lang } = Astro.props;
 const { Content } = await render(post);
 ---
 
 <BlogPost {...post.data}>
-	<Content />
+    <Content />
 </BlogPost>
