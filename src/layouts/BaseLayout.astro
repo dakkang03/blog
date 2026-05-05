@@ -1,0 +1,49 @@
+---
+import Sidebar from '../components/Sidebar.astro';
+import LanguageToggle from '../components/LanguageToggle.astro';
+import { getLangFromUrl } from '../i18n/utils';
+
+interface Props {
+  title: string;
+  description?: string;
+  slug?: string;
+}
+
+const { title, description = '', slug } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+
+const base = 'https://your-username.github.io';
+const currentPath = slug ? `/blog/${slug}` : '/';
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={`${base}/${lang}${currentPath}`} />
+    <link rel="alternate" hreflang="en" href={`${base}/en${currentPath}`} />
+    <link rel="alternate" hreflang="ko" href={`${base}/ko${currentPath}`} />
+    <link rel="alternate" hreflang="x-default" href={`${base}/en${currentPath}`} />
+  </head>
+  <body>
+    <div class="layout">
+      <Sidebar lang={lang} />
+      <main class="main">
+        <div class="top-bar">
+          <LanguageToggle currentLang={lang} currentPath={currentPath} />
+        </div>
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: #e0e0e0; font-family: system-ui, sans-serif; }
+  .layout { display: flex; min-height: 100vh; }
+  .main { flex: 1; padding: 28px 40px; }
+  .top-bar { display: flex; justify-content: flex-end; margin-bottom: 32px; }
+</style>

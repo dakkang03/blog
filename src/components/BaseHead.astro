@@ -6,27 +6,37 @@ import { SITE_TITLE } from '../consts';
 import { Font } from 'astro:assets';
 
 interface Props {
-	title: string;
-	description: string;
-	image?: ImageMetadata;
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+  lang?: string;
+  slug?: string;
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const base = import.meta.env.BASE_URL;
+const { title, description, image = FallbackImage, lang = 'en', slug } = Astro.props;
 
-const { title, description, image = FallbackImage } = Astro.props;
+const base = import.meta.env.BASE_URL;  // ← 이게 favicon 등에 쓰는 base
+const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const currentPath = slug ? `/blog/${slug}` : '/';
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<!-- hreflang: 구글 언어별 인덱싱 -->
+<link rel="alternate" hreflang="en" href={`${siteBase}/en${currentPath}`} />
+<link rel="alternate" hreflang="ko" href={`${siteBase}/ko${currentPath}`} />
+<link rel="alternate" hreflang="x-default" href={`${siteBase}/en${currentPath}`} />
+
 <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
 <link rel="icon" href={`${base}favicon.ico`} />
 <link rel="sitemap" href={`${base}sitemap-index.xml`} />
 <link
-	rel="alternate"
-	type="application/rss+xml"
-	title={SITE_TITLE}
-	href={new URL('rss.xml', Astro.site)}
+  rel="alternate"
+  type="application/rss+xml"
+  title={SITE_TITLE}
+  href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 

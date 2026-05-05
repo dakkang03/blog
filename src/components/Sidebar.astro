@@ -1,0 +1,84 @@
+---
+import { getCollection } from 'astro:content';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: 'en' | 'ko';
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const allPosts = await getCollection('blog');
+const langPosts = allPosts.filter(p => p.id.startsWith(`${lang}/`));
+
+const categories = [...new Set(
+  langPosts.map(p => p.data.category).filter(Boolean)
+)];
+
+const tags = [...new Set(
+  langPosts.flatMap(p => p.data.tags ?? [])
+)];
+---
+
+<aside class="sidebar">
+  <div class="profile">
+    <a href={`${base}/${lang}/`}>
+      <img src={`${base}/images/profile.jpg`} alt="Profile" class="avatar" />
+    </a>
+    <a href={`${base}/${lang}/`} class="blog-title">DAKKANG'S BLOG</a>
+  </div>
+
+<nav>
+  <p class="nav-label">{t('sidebar.category')}</p>
+  {categories.length > 0
+    ? (categories as string[]).map(cat => (
+        <a href={`${base}/${lang}/category/${cat}`}>{cat.toUpperCase()}</a>
+      ))
+    : <span class="empty">-</span>
+  }
+</nav>
+
+  <nav>
+  <p class="nav-label">{t('sidebar.tag')}</p>
+  {tags.length > 0
+    ? tags.map(tag => (
+        <a href={`${base}/${lang}/tag/${tag}`}>{tag.toUpperCase()}</a>
+      ))
+    : <span class="empty">-</span>
+  }
+</nav>
+
+  <nav>
+    <p class="nav-label">{t('sidebar.about')}</p>
+    <a href="https://www.linkedin.com/in/dakyung-kang/" target="_blank">LINKED IN</a>
+    <a href="https://github.com/dakkang03" target="_blank">GITHUB</a>
+    <a href="https://dakkang03.github.io/" target="_blank">PORTFOLIO</a>
+  </nav>
+</aside>
+
+<style>
+  .sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    background: #161616;
+    border-right: 0.5px solid #2a2a2a;
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .profile { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background: #333; }
+  .blog-title { font-size: 12px; letter-spacing: 0.08em; color: #e0e0e0; text-align: center; text-decoration: none; }
+  nav { display: flex; flex-direction: column; gap: 6px; }
+  .nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; color: #666; margin-bottom: 2px; }
+  a { font-size: 11px; letter-spacing: 0.06em; color: #bbb; text-decoration: none; }
+  a:hover { color: #fff; }
+  .empty { font-size: 11px; color: #444; }
+</style>

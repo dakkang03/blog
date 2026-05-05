@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const enPosts = posts.filter(p => p.id.startsWith('ko/'));
+
+  const categories = [...new Set(
+    enPosts.map(p => p.data.category).filter(Boolean)
+  )];
+
+  return categories.map(category => ({
+    params: { category },
+    props: {
+      category,
+      posts: enPosts.filter(p => p.data.category === category),
+    },
+  }));
+}
+
+interface Props {
+  category: string;
+  posts: CollectionEntry<'blog'>[];
+}
+
+const lang = 'ko' as const;
+const t = useTranslations(lang);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const { category, posts } = Astro.props as { category: string; posts: CollectionEntry<'blog'>[] };
+
+const formatSlug = (id: string) =>
+  id.replace(/^ko\//, '').replace(/\.(md|mdx)$/, '');
+---
+
+<BaseLayout title={category} description={`Posts in ${category}`}>
+  <section>
+    <h2>{category.toUpperCase()}</h2>
+    <ul class="post-list">
+      {posts.map((post: any) => (
+        <li class="post-item">
+          <a href={`${base}/ko/blog/${formatSlug(post.id)}/`}>
+            <h4 class="post-title">{post.data.title}</h4>
+            <p class="post-date">{post.data.pubDate.toLocaleDateString()}</p>
+            {post.data.description && (
+              <p class="post-excerpt">{post.data.description}</p>
+            )}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  h2 { font-size: 1rem; font-weight: 500; color: #e0e0e0; margin-bottom: 1.5rem; }
+  .post-list { list-style: none; padding: 0; margin: 0; }
+  .post-item { padding: 1.2rem 0; border-top: 0.5px solid #2a2a2a; }
+  .post-item:last-child { border-bottom: 0.5px solid #2a2a2a; }
+  .post-item a { text-decoration: none; display: block; }
+  .post-title { font-size: 0.95rem; font-weight: 500; color: #e0e0e0; margin: 0 0 0.3rem; }
+  .post-date { font-size: 0.75rem; color: #666; margin: 0 0 0.5rem; }
+  .post-excerpt {
+    font-size: 0.82rem; color: #888;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .post-item a:hover .post-title { color: #fff; }
+</style>
