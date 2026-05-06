@@ -4,18 +4,11 @@ import BlogPost from '../../../layouts/BlogPost.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-
   return posts
     .filter((post) => post.id.startsWith('en/'))
     .map((post) => {
-      const slug = post.id
-        .replace(/^en\//, '')
-        .replace(/\.(md|mdx)$/, '');
-
-      return {
-        params: { slug },
-        props: { post },
-      };
+      const slug = post.id.replace(/^en\//, '').replace(/\.(md|mdx)$/, '');
+      return { params: { slug }, props: { post } };
     });
 }
 
@@ -24,9 +17,53 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+const lang = 'en';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const slug = post.id.replace(/^en\//, '').replace(/\.(md|mdx)$/, '');
+
+const allPosts = await getCollection('blog');
+const enPosts = allPosts
+  .filter(p => p.id.startsWith('en/'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const normalizeId = (id: string) => id.replace(/\.(md|mdx)$/, '');
+const currentIndex = enPosts.findIndex(p => normalizeId(p.id) === normalizeId(post.id));
+const prevPost = currentIndex < enPosts.length - 1 ? enPosts[currentIndex + 1] : null;
+const nextPost = currentIndex > 0 ? enPosts[currentIndex - 1] : null;
+
+const currentTags = post.data.tags ?? [];
+
+const relatedPosts = allPosts
+  .filter(p =>
+    p.id.startsWith('en/') &&
+    p.id !== post.id &&
+    (p.data.tags ?? []).some(tag => currentTags.includes(tag))
+  )
+  .sort((a, b) => {
+    const aCount = (a.data.tags ?? []).filter(t => currentTags.includes(t)).length;
+    const bCount = (b.data.tags ?? []).filter(t => currentTags.includes(t)).length;
+    return bCount - aCount || b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+  })
+  .slice(0, 3);
+
+const formatSlug = (id: string) =>
+  id.replace(/^en\//, '').replace(/\.(md|mdx)$/, '');
 ---
 
-<BlogPost {...post.data} slug={post.id.replace(/^en\//, '').replace(/\.(md|mdx)$/, '')}>
+<BlogPost
+  {...post.data}
+  slug={slug}
+  lang={lang}
+  headings={headings}
+  prevPost={prevPost ? { slug: formatSlug(prevPost.id), title: prevPost.data.title } : null}
+  nextPost={nextPost ? { slug: formatSlug(nextPost.id), title: nextPost.data.title } : null}
+  relatedPosts={relatedPosts.map(p => ({
+    slug: formatSlug(p.id),
+    title: p.data.title,
+    description: p.data.description,
+    date: p.data.pubDate,
+  }))}
+>
   <Content />
 </BlogPost>

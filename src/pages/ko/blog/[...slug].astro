@@ -27,17 +27,24 @@ const enPosts = allPosts
   .filter(p => p.id.startsWith('ko/'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const currentIndex = enPosts.findIndex(p => p.id === post.id);
+const normalizeId = (id: string) => id.replace(/\.(md|mdx)$/, '');
+const currentIndex = enPosts.findIndex(p => normalizeId(p.id) === normalizeId(post.id));
 const prevPost = currentIndex < enPosts.length - 1 ? enPosts[currentIndex + 1] : null;
 const nextPost = currentIndex > 0 ? enPosts[currentIndex - 1] : null;
+
+const currentTags = post.data.tags ?? [];
 
 const relatedPosts = allPosts
   .filter(p =>
     p.id.startsWith('ko/') &&
     p.id !== post.id &&
-    p.data.category === post.data.category
+    (p.data.tags ?? []).some(tag => currentTags.includes(tag))
   )
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .sort((a, b) => {
+    const aCount = (a.data.tags ?? []).filter(t => currentTags.includes(t)).length;
+    const bCount = (b.data.tags ?? []).filter(t => currentTags.includes(t)).length;
+    return bCount - aCount || b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+  })
   .slice(0, 3);
 
 const formatSlug = (id: string) =>

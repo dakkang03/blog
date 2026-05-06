@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 import BaseLayout from './BaseLayout.astro';
@@ -28,7 +27,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <BaseLayout title={title} description={description} slug={slug}>
   <div class="post-wrap">
 
-    <!-- 본문 -->
+    <!-- main  -->
     <article class="prose">
       <div class="post-header">
         <h1>{title}</h1>
@@ -41,16 +40,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
 
       {heroImage && (
-        <Image class="hero-image" width={1020} height={510} src={heroImage} alt="" />
+      <img class="hero-image" src={heroImage} alt="" />
       )}
 
       <slot />
 
-      <!-- 카테고리 + 태그 -->
+      <!-- categories & tags -->
       <div class="post-meta">
         {category && (
           <div class="meta-row">
-            <span class="meta-icon">&#9645;</span>
+            <img src={`${base}/src/assets/archive.png`} alt="category" class="meta-icon" />
             <a href={`${base}/${lang}/category/${category}`} class="meta-link">
               {category.toUpperCase()}
             </a>
@@ -58,7 +57,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         )}
         {tags && tags.length > 0 && (
           <div class="meta-row">
-            <span class="meta-icon">&#9671;</span>
+            <img src={`${base}/src/assets/tag.png`} alt="category" class="meta-icon" />
             {tags.map(tag => (
               <a href={`${base}/${lang}/tag/${tag}`} class="tag-link">#{tag}</a>
             ))}
@@ -66,12 +65,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         )}
       </div>
 
-      <!-- 이전글 / 다음글 -->
+      <!-- prev post / next post -->
       <nav class="post-nav">
         <div class="nav-item prev">
           {prevPost ? (
             <a href={`${base}/${lang}/blog/${prevPost.slug}/`}>
-              <span class="nav-label">&#8592; 이전글</span>
+              <span class="nav-label">&#8592; prev</span>
               <span class="nav-title">{prevPost.title}</span>
             </a>
           ) : <span class="nav-empty" />}
@@ -79,14 +78,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="nav-item next">
           {nextPost ? (
             <a href={`${base}/${lang}/blog/${nextPost.slug}/`}>
-              <span class="nav-label">다음글 &#8594;</span>
+              <span class="nav-label">next &#8594;</span>
               <span class="nav-title">{nextPost.title}</span>
             </a>
           ) : <span class="nav-empty" />}
         </div>
       </nav>
 
-      <!-- 관련 포스트 -->
+      <!-- related post -->
       {relatedPosts.length > 0 && (
         <section class="related">
           <p class="related-label">RELATED POSTS</p>
@@ -105,7 +104,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       )}
     </article>
 
-    <!-- 목차 (우측) -->
+    <!-- contents -->
     <aside class="toc" id="toc-container">
     <p class="toc-title">CONTENTS</p>
     <ul id="toc-list"></ul>
@@ -130,7 +129,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       return;
     }
 
-    // id 없으면 자동 생성
+    // id generator
     headings.forEach(h => {
       if (!h.id) {
         h.id = (h.textContent ?? '')
@@ -141,7 +140,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
     });
 
-    // TOC 생성
+    // TOC generator
     tocList.innerHTML = headings.map(h => {
       const depth = parseInt(h.tagName[1]);
       return `<li class="toc-item depth-${depth}">
@@ -153,7 +152,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       document.querySelectorAll<HTMLAnchorElement>('.toc-link')
     );
 
-    // 스크롤 하이라이트
+    // scroll-highlight
     function onScroll() {
       let current = headings[0]?.id ?? '';
       for (const h of headings) {
@@ -167,7 +166,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-    // 클릭 시 부드럽게 이동
+    // click event
     links.forEach(l => {
       l.addEventListener('click', e => {
         e.preventDefault();
@@ -200,7 +199,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .updated { color: #555; }
   .hero-image { width: 100%; border-radius: 8px; margin-bottom: 2rem; }
 
-  /* 마크다운 본문 */
+  /* md main */
 :global(.prose h1, .prose h2, .prose h3, .prose h4) {
   scroll-margin-top: 80px;
   }
@@ -209,7 +208,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   :global(.prose pre) { background: #1a1a1a; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1.5rem; }
   :global(.prose a) { color: #4a90d9; }
 
-  /* 카테고리 + 태그 */
+  /* categories & tags */
   .post-meta {
     margin-top: 3rem;
     padding-top: 1.5rem;
@@ -219,13 +218,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     gap: 8px;
   }
   .meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .meta-icon { color: #555; font-size: 0.8rem; }
-  .meta-link { font-size: 0.78rem; color: #bbb; text-decoration: none; letter-spacing: 0.06em; }
+  .meta-icon { filter: invert(0.8); width: 15px; height: 15px; object-fit: contain; }
+  .meta-link { font-size: 0.85rem; color: #bbb; text-decoration: none; letter-spacing: 0.06em; }
   .meta-link:hover { color: #fff; }
-  .tag-link { font-size: 0.78rem; color: #4a90d9; text-decoration: none; }
-  .tag-link:hover { color: #7ab4f0; }
+  .tag-link { font-size: 0.85rem; color: #bbb; text-decoration: none; }
+  .tag-link:hover { color: #fff; }
 
-  /* 이전글/다음글 */
+  /* prev/next */
   .post-nav {
     display: flex;
     gap: 12px;
@@ -250,7 +249,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .nav-title { font-size: 0.82rem; color: #ccc; }
   .nav-empty { display: block; flex: 1; }
 
-  /* 관련 포스트 */
+  /* related post */
   .related { margin-top: 2rem; padding-top: 1.5rem; border-top: 0.5px solid #2a2a2a; }
   .related-label { font-size: 0.7rem; color: #666; letter-spacing: 0.1em; margin-bottom: 1rem; }
   .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -258,24 +257,24 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     display: block;
     text-decoration: none;
     padding: 14px;
-    background: #1a1a1a;
+    background: #474848;
+    opacity: 0.8;
     border: 0.5px solid #2a2a2a;
     border-radius: 8px;
     transition: border-color 0.2s;
   }
-  .related-card:hover { border-color: #555; }
-  .related-card h4 { font-size: 0.82rem; color: #e0e0e0; margin: 0 0 4px; font-weight: 500; }
-  .related-date { font-size: 0.7rem; color: #666; margin: 0 0 6px; }
+  .related-card:hover { border-color: #ededed; }
+  .related-card h4 { font-size: 0.82rem; color: #fff; margin: 0 0 4px; font-weight: 500; }
+  .related-date { font-size: 0.7rem; color: #D7D7D7; margin: 0 0 6px; }
   .related-desc {
-    font-size: 0.75rem; color: #888; margin: 0;
+    font-size: 0.75rem; color: #E3E3E3; margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  /* 목차 */
-  /* 목차 */
+  /* toc */
 .toc {
   width: 180px;
   flex-shrink: 0;
