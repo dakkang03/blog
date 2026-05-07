@@ -1,6 +1,8 @@
 ---
+import BaseHead from '../components/BaseHead.astro';
 import Sidebar from '../components/Sidebar.astro';
 import LanguageToggle from '../components/LanguageToggle.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 import { getLangFromUrl } from '../i18n/utils';
 
 interface Props {
@@ -11,27 +13,28 @@ interface Props {
 
 const { title, description = '', slug } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
-
-const base = 'https://your-username.github.io';
 const currentPath = slug ? `/blog/${slug}` : '/';
 ---
 
-<html lang={lang}>
+<html lang={lang} data-theme="dark">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={`${base}/${lang}${currentPath}`} />
-    <link rel="alternate" hreflang="en" href={`${base}/en${currentPath}`} />
-    <link rel="alternate" hreflang="ko" href={`${base}/ko${currentPath}`} />
-    <link rel="alternate" hreflang="x-default" href={`${base}/en${currentPath}`} />
+    <BaseHead title={title} description={description} lang={lang} slug={slug} />
+    <script is:inline>
+      // 깜빡임 방지: 렌더링 전에 테마 적용
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute(
+        'data-theme',
+        saved ?? (prefersDark ? 'dark' : 'light')
+      );
+    </script>
   </head>
   <body>
     <div class="layout">
       <Sidebar lang={lang} />
       <main class="main">
         <div class="top-bar">
+          <ThemeToggle />
           <LanguageToggle currentLang={lang} currentPath={currentPath} />
         </div>
         <slot />
@@ -41,9 +44,39 @@ const currentPath = slug ? `/blog/${slug}` : '/';
 </html>
 
 <style>
+  /* CSS 변수 - 다크모드 (기본) */
+  :global([data-theme="dark"]) {
+    --bg-primary: #111;
+    --bg-sidebar: #161616;
+    --bg-card: #1a1a1a;
+    --bg-image: #222;
+    --text-primary: #e0e0e0;
+    --text-body: #aaa;
+    --text-muted: #888;
+    --text-subtle: #666;
+    --border-color: #2a2a2a;
+    --border-hover: #555;
+    --accent: #4a90d9;
+  }
+
+  /* CSS 변수 - 라이트모드 */
+  :global([data-theme="light"]) {
+    --bg-primary: #f8f8f8;
+    --bg-sidebar: #efefef;
+    --bg-card: #ffffff;
+    --bg-image: #e8e8e8;
+    --text-primary: #1a1a1a;
+    --text-body: #444;
+    --text-muted: #666;
+    --text-subtle: #999;
+    --border-color: #e0e0e0;
+    --border-hover: #bbb;
+    --accent: #2563eb;
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #111; color: #e0e0e0; font-family: system-ui, sans-serif; }
+  :global(body) { background: var(--bg-primary); color: var(--text-primary); font-family: system-ui, sans-serif; transition: background 0.2s, color 0.2s; }
   .layout { display: flex; min-height: 100vh; }
   .main { flex: 1; padding: 28px 40px; }
-  .top-bar { display: flex; justify-content: flex-end; margin-bottom: 32px; }
+  .top-bar { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 32px; }
 </style>

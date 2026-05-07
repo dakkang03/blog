@@ -1,45 +1,30 @@
 ---
-title: 'Second post'
-description: 'Lorem ipsum dolor sit amet'
-pubDate: 'Jul 24 2022'
-tags: ["UVM", ]
-category: "TECH TRENDS & PATENT"
+title: '포스트 제목'
+description: '한 줄 요약 (목록에서 보이는 설명)'
+pubDate: 'Jan 01 2024'
+tags: ["tag1", "tag2"]
+category: "STUDY NOTES"
+heroImage: /blog/images/thumbnail.jpg
 ---
 
-# Project Structure
+## Summary
 
-Lorem ipsum...aaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaax
-xxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xx
+첫 번째 요약 문장입니다.
+두 번째 요약 문장입니다.
+세 번째 요약 문장입니다.
+네 번째 요약 문장입니다.
+다섯 번째 요약 문장입니다.
 
-## Section 1
+---
 
-..xxxxxxxxxxxxxxxxxxxx.
-xxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxx
+## Section 1 — 소주제 제목
 
-xxxxxxxxxxxxxxxxxx
+내용...
 
+## Section 2 — 소주제 제목
 
-## Section 2
+내용...
 
-xxxxxxxxxxx
-x...
-xxxxxxxxxxx
-xxxxxxxxx
-x
-x
+## Section 3 — 소주제 제목
 
-x
-x
-x
-x
-
-x
-x
-x
-xxxxxxxxxxxx
+내용...

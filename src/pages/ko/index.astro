@@ -84,46 +84,27 @@ const postsData = posts.map((p) => ({
     font-size: 1.7rem;
     font-weight: 500;
     letter-spacing: 0.06em;
-    color: #e0e0e0;
+    color: var(--text-primary);
     margin-bottom: 1.5rem;
   }
-:global(.post-list) { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
-:global(.post-item) {
-  padding: 1.2rem 0;
-  border-top: 1.3px solid #676767;
-}
-:global(.post-item:last-child) {
-  border-bottom: 1.3px solid #676767;
-}
-:global(.post-item a) { text-decoration: none; display: block; }
-:global(.post-title) { font-size: 1.3rem; font-weight: 500; color: #e0e0e0; margin: 0 0 0.3rem; }
-:global(.post-date) { font-size: 0.85rem; color: #666; margin: 0 0 0.5rem; }
-:global(.post-excerpt) {
-  font-size: 0.95rem;
-  color: #888;
-  margin: 0 0 0.5rem;
-  line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-:global(.post-tags) { display: flex; gap: 6px; flex-wrap: wrap; }
-:global(.tag) { font-size: 0.8rem; color: #4a90d9; }
-:global(.post-item a:hover .post-title) { color: #fff; }
-  .pagination {
-    display: flex; align-items: center; justify-content: center;
-    gap: 4px; margin-top: 2rem; padding-top: 1.5rem;
+  :global(.post-list) { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+  :global(.post-item) { padding: 1.2rem 0; border-top: 1.3px solid var(--border-color); }
+  :global(.post-item:last-child) { border-bottom: 1.3px solid var(--border-color); }
+  :global(.post-item a) { text-decoration: none; display: block; }
+  :global(.post-title) { font-size: 1.3rem; font-weight: 500; color: var(--text-primary); margin: 0 0 0.3rem; }
+  :global(.post-date) { font-size: 0.85rem; color: var(--text-subtle); margin: 0 0 0.5rem; }
+  :global(.post-excerpt) {
+    font-size: 0.95rem; color: var(--text-muted); margin: 0 0 0.5rem; line-height: 1.6;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
-  :global(.pag-num) {
-    color: #dcdbdf; font-size: 0.82rem; padding: 4px 8px;
-    border-radius: 4px; cursor: pointer;
-  }
-  :global(.pag-num:hover) { color: #fff; }
-  :global(.pag-num.active) { color: #e0e0e0; font-weight: 500; background: #2a2a2a; }
-  :global(.pag-arrow) {
-    font-size: 2rem; color: #dcdbdf; padding: 4px 6px; cursor: pointer;
-  }
-  :global(.pag-arrow:hover) { color: #ffffff; }
+  :global(.post-tags) { display: flex; gap: 6px; flex-wrap: wrap; }
+  :global(.tag) { font-size: 0.8rem; color: var(--accent); }
+  :global(.post-item a:hover .post-title) { color: var(--text-primary); filter: brightness(1.3); }
+  .pagination { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 2rem; padding-top: 1.5rem; }
+  :global(.pag-num) { color: var(--text-muted); font-size: 0.82rem; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
+  :global(.pag-num:hover) { color: var(--text-primary); }
+  :global(.pag-num.active) { color: var(--text-primary); font-weight: 500; background: var(--bg-card); }
+  :global(.pag-arrow) { font-size: 2rem; color: var(--text-muted); padding: 4px 6px; cursor: pointer; }
+  :global(.pag-arrow:hover) { color: var(--text-primary); }
   :global(.pag-arrow.disabled) { opacity: 0.3; cursor: default; }
 </style>

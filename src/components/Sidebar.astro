@@ -74,8 +74,8 @@ langPosts.forEach(p => {
   .sidebar {
     width: 200px;
     flex-shrink: 0;
-    background: #161616;
-    border-right: 0.5px solid #2a2a2a;
+    background: var(--bg-sidebar);
+    border-right: 0.5px solid var(--border-color);
     padding: 28px 20px;
     display: flex;
     flex-direction: column;
@@ -86,18 +86,20 @@ langPosts.forEach(p => {
     overflow-y: auto;
   }
   .profile { display: flex; flex-direction: column; align-items: center; gap: 25px; }
-  .avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background: #333; }
-  .blog-title { font-size: 18px; letter-spacing: 0.08em; color: #e0e0e0; text-align: center; text-decoration: none; }
+  .avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background: var(--bg-image); }
+  .blog-title { font-size: 18px; letter-spacing: 0.08em; color: var(--text-primary); text-align: center; text-decoration: none; }
   nav { display: flex; flex-direction: column; gap: 6px; }
   .nav-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-decoration: none;
-  width: 98%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    width: 98%;
   }
-  .nav-label { font-size: 14px; font-weight: 600; letter-spacing: 0.12em; color: #666; margin-bottom: 2px; }
-  a { font-size: 12px; letter-spacing: 0.06em; color: #bbb; text-decoration: none; }
-  a:hover { color: #fff; }
-  .empty { font-size: 11px; color: #444; }
+  .nav-label { font-size: 14px; font-weight: 600; letter-spacing: 0.12em; color: var(--text-subtle); margin-bottom: 2px; }
+  a { font-size: 12px; letter-spacing: 0.06em; color: var(--text-muted); text-decoration: none; }
+  a:hover { color: var(--text-primary); }
+  .empty { font-size: 11px; color: var(--text-subtle); }
+  .count { font-size: 10px; color: var(--text-subtle); padding: 1px 6px; border-radius: 999px; flex-shrink: 0; margin-left: 4px; }
+  .nav-row span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
 </style>
