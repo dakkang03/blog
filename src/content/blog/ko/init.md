@@ -2,7 +2,8 @@
 title: '첫 번째 글'
 description: '테스트'
 pubDate: 'Jul 08 2022'
-tags: ["UVM", "semiconductor", "vvv"]
+category: '기술 & 특허 분석'
+tags: ["UVM", "semiconductor", "vvv", "시각화"]
 ---
 
 # Project Structure

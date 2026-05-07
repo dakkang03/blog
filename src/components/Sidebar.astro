@@ -13,13 +13,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const allPosts = await getCollection('blog');
 const langPosts = allPosts.filter(p => p.id.startsWith(`${lang}/`));
 
-const categories = [...new Set(
-  langPosts.map(p => p.data.category).filter(Boolean)
-)];
+const categoryMap = new Map<string, number>();
+langPosts.forEach(p => {
+  if (p.data.category) {
+    categoryMap.set(p.data.category, (categoryMap.get(p.data.category) ?? 0) + 1);
+  }
+});
 
-const tags = [...new Set(
-  langPosts.flatMap(p => p.data.tags ?? [])
-)];
+const tagMap = new Map<string, number>();
+langPosts.forEach(p => {
+  (p.data.tags ?? []).forEach(tag => {
+    tagMap.set(tag, (tagMap.get(tag) ?? 0) + 1);
+  });
+});
 ---
 
 <aside class="sidebar">
@@ -31,24 +37,30 @@ const tags = [...new Set(
   </div>
 
 <nav>
-  <p class="nav-label">{t('sidebar.category')}</p>
-  {categories.length > 0
-    ? (categories as string[]).map(cat => (
-        <a href={`${base}/${lang}/category/${cat}`}>{cat.toUpperCase()}</a>
-      ))
-    : <span class="empty">-</span>
-  }
-</nav>
+    <p class="nav-label">{t('sidebar.category')}</p>
+    {categoryMap.size > 0
+      ? [...categoryMap.entries()].map(([cat, count]) => (
+          <a href={`${base}/${lang}/category/${cat}`} class="nav-row">
+            <span>{cat.toUpperCase()}</span>
+            <span class="count">{count}</span>
+          </a>
+        ))
+      : <span class="empty">-</span>
+    }
+  </nav>
 
   <nav>
-  <p class="nav-label">{t('sidebar.tag')}</p>
-  {tags.length > 0
-    ? tags.map(tag => (
-        <a href={`${base}/${lang}/tag/${tag}`}>{tag.toUpperCase()}</a>
-      ))
-    : <span class="empty">-</span>
-  }
-</nav>
+    <p class="nav-label">{t('sidebar.tag')}</p>
+    {tagMap.size > 0
+      ? [...tagMap.entries()].map(([tag, count]) => (
+          <a href={`${base}/${lang}/tag/${tag}`} class="nav-row">
+            <span>{tag.toUpperCase()}</span>
+            <span class="count">{count}</span>
+          </a>
+        ))
+      : <span class="empty">-</span>
+    }
+  </nav>
 
   <nav>
     <p class="nav-label">{t('sidebar.about')}</p>
@@ -77,6 +89,13 @@ const tags = [...new Set(
   .avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background: #333; }
   .blog-title { font-size: 18px; letter-spacing: 0.08em; color: #e0e0e0; text-align: center; text-decoration: none; }
   nav { display: flex; flex-direction: column; gap: 6px; }
+  .nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  width: 98%;
+  }
   .nav-label { font-size: 14px; font-weight: 600; letter-spacing: 0.12em; color: #666; margin-bottom: 2px; }
   a { font-size: 12px; letter-spacing: 0.06em; color: #bbb; text-decoration: none; }
   a:hover { color: #fff; }
