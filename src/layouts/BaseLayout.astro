@@ -19,8 +19,9 @@ const currentPath = slug ? `/blog/${slug}` : '/';
 <html lang={lang} data-theme="dark">
   <head>
     <BaseHead title={title} description={description} lang={lang} slug={slug} />
+    
     <script is:inline>
-      // 깜빡임 방지: 렌더링 전에 테마 적용
+      
       const saved = localStorage.getItem('theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.setAttribute(
@@ -75,7 +76,7 @@ const currentPath = slug ? `/blog/${slug}` : '/';
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  :global(body) { background: var(--bg-primary); color: var(--text-primary); font-family: system-ui, sans-serif; transition: background 0.2s, color 0.2s; }
+  :global(body) { background: var(--bg-primary); color: var(--text-primary); font-family: 'SUIT', sans-serif; transition: background 0.2s, color 0.2s; }
   .layout { display: flex; min-height: 100vh; }
   .main { flex: 1; padding: 28px 40px; }
   .top-bar { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 32px; }
