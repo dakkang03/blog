@@ -205,7 +205,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     color: var(--text-primary);
   }
   :global(.prose p) { color: var(--text-body); line-height: 1.8; margin-bottom: 1rem; }
-  :global(.prose code) { background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; color: var(--text-primary); }
+  :global(.prose code) { background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 0.7em; color: var(--text-primary); }
   :global(.prose pre) { background: var(--bg-card); padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1.5rem; }
   :global(.prose a) { color: var(--accent); }
 
@@ -282,19 +282,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     top: 28px;
     max-height: calc(100vh - 56px);
     overflow-y: auto;
+    margin-left: 180px;
   }
-  .toc-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; color: var(--text-subtle); margin-bottom: 12px; }
+  .toc-title { font-size: 0.85rem; font-weight: 650; letter-spacing: 0.1em; color: var(--text-subtle); margin-bottom: 12px; }
   :global(#toc-list) { list-style: none; padding: 0; margin: 0; border-left: 0.5px solid var(--border-color); }
   :global(.toc-item) { padding: 3px 0; }
   :global(.depth-2) { padding-left: 12px; }
   :global(.depth-3) { padding-left: 24px; }
   :global(.depth-4) { padding-left: 36px; }
   :global(.toc-link) {
-    font-size: 0.75rem;
+    font-size: 0.77rem;
     color: var(--text-subtle);
     text-decoration: none;
     display: block;
-    padding: 2px 8px;
+    padding: 1.5px 8px;
     border-left: 2px solid transparent;
     margin-left: -1px;
     transition: color 0.2s, border-color 0.2s;

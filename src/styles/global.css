@@ -5,7 +5,7 @@
  */
 @font-face {
   font-family: 'SUIT';
-  src: url('../assets/fonts/SUIT-Variable.woff2') format('woff2');
+  src: url('/blog/fonts/SUIT-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -53,19 +53,22 @@ h6 {
 	line-height: 1.2;
 }
 h1 {
-	font-size: 3.052em;
+	font-size: 1.8em;
 }
 h2 {
-	font-size: 2.441em;
+	font-size: 1.6em;
 }
 h3 {
-	font-size: 1.953em;
+	font-size: 1.4em;
 }
 h4 {
-	font-size: 1.563em;
+	font-size: 1.2em;
 }
 h5 {
-	font-size: 1.25em;
+	font-size: 1em;
+}
+h6{
+	font-size: 0.8em;
 }
 strong,
 b {
@@ -78,6 +81,7 @@ a:hover {
 	color: var(--accent);
 }
 p {
+	font-size: 0.8em;
 	margin-bottom: 1em;
 }
 .prose p {

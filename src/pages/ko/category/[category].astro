@@ -25,7 +25,7 @@ interface Props {
   posts: CollectionEntry<'blog'>[];
 }
 
-const GRID_CATEGORIES = ['기술 & 특허 분석'];
+const GRID_CATEGORIES = ['TECH TRENDS & PATENT'];
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const lang = 'ko';
@@ -53,7 +53,7 @@ function getFirstImage(body: string): string | null {
             ?? getFirstImage(post.body ?? '');
           return (
             <article class="card">
-              <a href={`${base}ko/blog/${formatSlug(post.id)}/`} class="card-link">
+              <a href={`${base}/ko/blog/${formatSlug(post.id)}/`} class="card-link">
                 <div class="card-image">
                   {imgSrc
                     ? <img src={imgSrc} alt={post.data.title} />

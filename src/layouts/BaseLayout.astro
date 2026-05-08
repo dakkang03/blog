@@ -45,7 +45,7 @@ const currentPath = slug ? `/blog/${slug}` : '/';
 </html>
 
 <style>
-  /* CSS 변수 - 다크모드 (기본) */
+  /* Dark Mode */
   :global([data-theme="dark"]) {
     --bg-primary: #111;
     --bg-sidebar: #161616;
@@ -60,7 +60,7 @@ const currentPath = slug ? `/blog/${slug}` : '/';
     --accent: #4a90d9;
   }
 
-  /* CSS 변수 - 라이트모드 */
+  /* Light Mode */
   :global([data-theme="light"]) {
     --bg-primary: #f8f8f8;
     --bg-sidebar: #efefef;
@@ -78,6 +78,6 @@ const currentPath = slug ? `/blog/${slug}` : '/';
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :global(body) { background: var(--bg-primary); color: var(--text-primary); font-family: 'SUIT', sans-serif; transition: background 0.2s, color 0.2s; }
   .layout { display: flex; min-height: 100vh; }
-  .main { flex: 1; padding: 28px 40px; }
+  .main { flex: 1; padding: 28px 40px; padding-left: 60px;}
   .top-bar { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 32px; }
 </style>
